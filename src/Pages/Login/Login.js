@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/Authprovider';
+import toast from 'react-hot-toast';
 
 
 const Login = () => {
-    const { signIn } = useContext(AuthContext);
+    const { signIn, setLoading } = useContext(AuthContext);
+    const [error, setError] = useState('');
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathaname || '/';
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -24,9 +28,22 @@ const Login = () => {
                 const user = res.user;
                 console.log(user);
                 form.reset();
-                navigate('/');
+                setError('');
+
+                if (user.emailVerified) {
+                    navigate(from, { replace: true });
+                }
+                else {
+                    toast.error('Please Verify Your Email Address');
+                }
             })
-            .catch(error => console.error(error))
+            .catch(error => {
+                console.error(error);
+                setError(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            })
 
     }
     return (
@@ -44,6 +61,9 @@ const Login = () => {
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
+                <p className='d-block text-danger'>
+                    {error}
+                </p>
             </Form>
         </div>
     );

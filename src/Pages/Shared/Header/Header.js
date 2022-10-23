@@ -42,32 +42,36 @@ const Header = () => {
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
+
+
                         <Nav>
-                            <Nav.Link >
+                            <Navbar>
+                                <Link to='/profile' className='d-flex align-items-center'>
+                                    {
+                                        user?.photoURL ?
+                                            <Image
+                                                style={{ height: '30px' }} roundedCircle
+                                                src={user?.photoURL}
+                                            ></Image>
+                                            :
+                                            <FaUser className='text-black'></FaUser>
+                                    }
+                                </Link>
+                            </Navbar>
+                            <Navbar>
                                 {
                                     user?.uid ?
                                         <>
-                                            <span>{user?.displayName}</span>
+                                            <Link to='/profile' className='text-decoration-none text-black fw-semibold ms-2'>{user?.displayName}</Link>
                                             <button onClick={handleLogOut} className='ms-2   rounded-3'>Log Out</button>
                                         </>
                                         :
                                         <>
-                                            <Link to='/login' className='me-2'>Login</Link>
-                                            <Link to='/register'>Register</Link>
+                                            <Link to='/login' className='mx-2 text-black text-decoration-none'>Login</Link>
+                                            <Link to='/register' className='text-black text-decoration-none'>Register</Link>
                                         </>
                                 }
-                            </Nav.Link>
-                            <Nav.Link >
-                                {
-                                    user?.photoURL ?
-                                        <Image
-                                            style={{ height: '30px' }} roundedCircle
-                                            src={user?.photoURL}
-                                        ></Image>
-                                        :
-                                        <FaUser></FaUser>
-                                }
-                            </Nav.Link>
+                            </Navbar>
                         </Nav>
 
                         <div className='d-lg-none d-block'>
