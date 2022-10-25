@@ -57,8 +57,7 @@ const Header = () => {
                                             <FaUser className='text-black'></FaUser>
                                     }
                                 </Link>
-                            </Navbar>
-                            <Navbar>
+
                                 {
                                     user?.uid ?
                                         <>
